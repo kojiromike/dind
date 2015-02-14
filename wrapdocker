@@ -95,5 +95,10 @@ else
 	else
 		docker -d $DOCKER_DAEMON_ARGS &
 	fi
-	exec ${1-bash}
+	until docker info >/dev/null 2>&1
+	do
+		:
+	done
+	[[ $1 ]] && exec "$@"
+	exec bash --login
 fi
